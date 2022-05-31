@@ -15,17 +15,14 @@ import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-/**
- *
- * @author Lenovo
- */
+
 public class artiste {
-    static Connection con;
-    public static void insert() {
+	getConnection gc=new getConnection();
+    public void insert() {
         int status = 0;
 
         try {
-            try (Connection con = getConnection.getConnection()) {
+            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
                 pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
@@ -56,10 +53,10 @@ public class artiste {
 
 
 
-    public static void delete(int id) {
+    public void delete(int id) {
         int status = 0;
         try {
-            Connection con = getConnection.getConnection(); //establishing the database connection 
+            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
             pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
@@ -82,11 +79,11 @@ public class artiste {
         }
     }
 
-    public static void read() {
+    public void read() {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = getConnection.getConnection()) {
+            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 pstmt = con.prepareStatement("select * from artiste");
 
@@ -108,10 +105,10 @@ public class artiste {
         }
 
     }
-        public static void update(int artiste_id, String artiste_name, String artiste_country, int artiste_age) {
+        public void update(int artiste_id, String artiste_name, String artiste_country, int artiste_age) {
         int status = 0;
         try {
-            con = getConnection.getConnection(); //estabishing the database connection
+            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
             pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key

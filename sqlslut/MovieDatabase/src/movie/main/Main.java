@@ -109,15 +109,17 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        movie m=new movie();
         int movie_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                movie.insert();  //inserting values into database
+            	
+                m.insert();  //inserting values into database
                 movieTable();
                 break;
             case 2:
-                movie.read();    //retrieving values from database
+                m.read();    //retrieving values from database
                 movieTable();
                 break;
             case 3:
@@ -138,13 +140,13 @@ public class Main {
                 String movie_release_date = sc.nextLine();
                 System.out.println("Enter new movie_rating:");
                 int movie_rating = sc.nextInt();
-                movie.update(movie_id, movie_title, movie_desc, movie_director, movie_writer, movie_hero, movie_release_date, movie_rating);   //updating records
+                m.update(movie_id, movie_title, movie_desc, movie_director, movie_writer, movie_hero, movie_release_date, movie_rating);   //updating records
                 movieTable();
                 break;
             case 4:
                 System.out.println("Enter movie_id of the record you want to delete:");
                 movie_id = sc.nextInt();
-                movie.delete(movie_id);     //deleting records
+                m.delete(movie_id);     //deleting records
                 movieTable();
                 break;
             default:
@@ -163,15 +165,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        genre g=new genre();
         int genre_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                genre.insert();  //inserting values into database
+                g.insert();  //inserting values into database
                 genreTable();
                 break;
             case 2:
-                genre.read();   //retrieving values from database
+                g.read();   //retrieving values from database
                 genreTable();
                 break;
             case 3:
@@ -183,13 +186,13 @@ public class Main {
                 System.out.println("Enter new genre_desc:");
                 String genre_desc = sc.next();
                 genre_desc+=sc.nextLine();
-                genre.update(genre_id, genre_type, genre_desc);   //updating records
+                g.update(genre_id, genre_type, genre_desc);   //updating records
                 genreTable();
                 break;
             case 4:
                 System.out.println("Enter genre_id of the record you want to delete:");
                 genre_id = sc.nextInt();
-                genre.delete(genre_id);       //deleting records
+                g.delete(genre_id);       //deleting records
                 genreTable();
                 break;
             default:
@@ -208,15 +211,18 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        movie_genre mg=new movie_genre();
+        
+        		
         int movie_genre_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                movie_genre.insert();   //inserting values into database
+                mg.insert();   //inserting values into database
                 movie_genreTable();
                 break;
             case 2:
-                movie_genre.read();   //retrieving values from database
+                mg.read();   //retrieving values from database
                 movie_genreTable();
                 break;
             case 3:
@@ -226,13 +232,13 @@ public class Main {
                 int genre_movie_id = sc.nextInt();
                 System.out.println("Enter new genre_genre_id:");
                 int genre_genre_id = sc.nextInt();
-                movie_genre.update(movie_genre_id, genre_movie_id, genre_genre_id);   //updating records
+                mg.update(movie_genre_id, genre_movie_id, genre_genre_id);   //updating records
                 movie_genreTable();
                 break;
             case 4:
                 System.out.println("Enter movie_genre_id of the record you want to delete:");
                 movie_genre_id = sc.nextInt();
-                movie_genre.delete(movie_genre_id);       //deleting records
+                mg.delete(movie_genre_id);       //deleting records
                 movie_genreTable();
                 break;
             default:
@@ -251,15 +257,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        poster p=new poster();
         int poster_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                poster.insert();  //inserting values into database
+                p.insert();  //inserting values into database
                 posterTable();
                 break;
             case 2:
-                poster.read();   //retrieving values from database
+                p.read();   //retrieving values from database
                 posterTable();
                 break;
             case 3:
@@ -270,13 +277,13 @@ public class Main {
                 poster_title+=sc.nextLine();
                 System.out.println("Enter new poster_movie_id:");
                 int poster_movie_id = sc.nextInt();
-                poster.update(poster_id, poster_title, poster_movie_id);   //updating records
+                p.update(poster_id, poster_title, poster_movie_id);   //updating records
                 posterTable();
                 break;
             case 4:
                 System.out.println("Enter poster_id of the record you want to delete:");
                 poster_id = sc.nextInt();
-                poster.delete(poster_id);       //deleting records
+                p.delete(poster_id);       //deleting records
                 posterTable();
                 break;
             default:
@@ -295,15 +302,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        trailer t=new trailer();
         int trailer_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                trailer.insert();   //inserting values into database
+                t.insert();   //inserting values into database
                 trailerTable();
                 break;
             case 2:
-                trailer.read();   //retrieving values from database
+                t.read();   //retrieving values from database
                 trailerTable();
                 break;
             case 3:
@@ -317,13 +325,13 @@ public class Main {
                 
                 System.out.println("Enter new trailer_movie_id:");
                 int trailer_movie_id = sc.nextInt();
-                trailer.update(trailer_id, trailer_length, trailer_url, trailer_movie_id);   //updating records
+                t.update(trailer_id, trailer_length, trailer_url, trailer_movie_id);   //updating records
                 trailerTable();
                 break;
             case 4:
                 System.out.println("Enter trailer_id of the record you want to delete:");
                 trailer_id = sc.nextInt();
-                trailer.delete(trailer_id);       //deleting records
+                t.delete(trailer_id);       //deleting records
                 trailerTable();
                 break;
             default:
@@ -342,15 +350,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        studio s=new studio();
         int studio_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                studio.insert();   //inserting values into database
+                s.insert();   //inserting values into database
                 studioTable();
                 break;
             case 2:
-                studio.read();   //retrieving values from database
+                s.read();   //retrieving values from database
                 studioTable();
                 break;
             case 3:
@@ -361,13 +370,13 @@ public class Main {
                 studio_name+=sc.nextLine();
                 System.out.println("Enter new studio_location:");
                 String studio_location = sc.nextLine();
-                studio.update(studio_id, studio_name, studio_location);   //updating records
+                s.update(studio_id, studio_name, studio_location);   //updating records
                 studioTable();
                 break;
             case 4:
                 System.out.println("Enter studio_id of the record you want to delete:");
                 studio_id = sc.nextInt();
-                studio.delete(studio_id);       //deleting records
+                s.delete(studio_id);       //deleting records
                 studioTable();
                 break;
             default:
@@ -386,15 +395,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        movie_studio ms=new movie_studio();
         int movie_studio_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                movie_studio.insert();  //inserting values into database
+                ms.insert();  //inserting values into database
                 movie_studioTable();
                 break;
             case 2:
-                movie_studio.read();   //retrieving values from database
+                ms.read();   //retrieving values from database
                 movie_studioTable();
                 break;
             case 3:
@@ -404,13 +414,13 @@ public class Main {
                 int studio_movie_id = sc.nextInt();
                 System.out.println("Enter new studio_studio_id:");
                 int studio_studio_id = sc.nextInt();
-                movie_studio.update(movie_studio_id, studio_movie_id, studio_studio_id);   //updating records
+                ms.update(movie_studio_id, studio_movie_id, studio_studio_id);   //updating records
                 movie_studioTable();
                 break;
             case 4:
                 System.out.println("Enter movie_studio_id of the record you want to delete:");
                 movie_studio_id = sc.nextInt();
-                movie_studio.delete(movie_studio_id);
+                ms.delete(movie_studio_id);
                 movie_studioTable();
                 break;
             default:
@@ -429,15 +439,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        actor a=new actor();
         int actor_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                actor.insert();  //inserting values into database
+                a.insert();  //inserting values into database
                 actorTable();
                 break;
             case 2:
-                actor.read();   //retrieving values from database
+                a.read();   //retrieving values from database
                 actorTable();
                 break;
             case 3:
@@ -456,13 +467,13 @@ public class Main {
                 String actor_insta_url = sc.nextLine();
                 System.out.println("Enter new actor_fb_url:");
                 String actor_fb_url = sc.nextLine();
-                actor.update(actor_id, actor_first_name, actor_last_name, actor_nationality, actor_twitter_url, actor_insta_url, actor_fb_url);   //updating records
+                a.update(actor_id, actor_first_name, actor_last_name, actor_nationality, actor_twitter_url, actor_insta_url, actor_fb_url);   //updating records
                 actorTable();
                 break;
             case 4:
                 System.out.println("Enter actor_id of the record you want to delete:");
                 actor_id = sc.nextInt();
-                actor.delete(actor_id);       //deleting records
+                a.delete(actor_id);       //deleting records
                 actorTable();
                 break;
             default:
@@ -481,15 +492,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        role r=new role();
         int role_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                role.insert();  //inserting values into database
+                r.insert();  //inserting values into database
                 roleTable();
                 break;
             case 2:
-                role.read();   //retrieving values from database
+                r.read();   //retrieving values from database
                 roleTable();
                 break;
             case 3:
@@ -502,13 +514,13 @@ public class Main {
                 int role_movie_id = sc.nextInt();
                 System.out.println("Enter new role_person_id:");
                 int role_person_id = sc.nextInt();
-                role.update(role_id, role_desc, role_movie_id, role_person_id);   //updating records
+                r.update(role_id, role_desc, role_movie_id, role_person_id);   //updating records
                 roleTable();
                 break;
             case 4:
                 System.out.println("Enter role_id of the record you want to delete:");
                 role_id = sc.nextInt();
-                role.delete(role_id);       //deleting records
+                r.delete(role_id);       //deleting records
                 roleTable();
                 break;
             default:
@@ -527,15 +539,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        band b=new band();
         int band_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                band.insert();  //inserting values into database
+                b.insert();  //inserting values into database
                 bandTable();
                 break;
             case 2:
-                band.read();   //retrieving values from database
+                b.read();   //retrieving values from database
                 bandTable();
                 break;
             case 3:
@@ -546,13 +559,13 @@ public class Main {
                 band_name+=sc.nextLine();
                 System.out.println("Enter new band_total_members:");
                 int band_total_members = sc.nextInt();
-                band.update(band_id, band_name, band_total_members);   //updating records
+                b.update(band_id, band_name, band_total_members);   //updating records
                 bandTable();
                 break;
             case 4:
                 System.out.println("Enter band_id of the record you want to delete:");
                 band_id = sc.nextInt();
-                band.delete(band_id);       //deleting records
+                b.delete(band_id);       //deleting records
                 bandTable();
                 break;
             default:
@@ -571,15 +584,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        song s=new song();
         int song_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                song.insert();  //inserting values into database
+                s.insert();  //inserting values into database
                 songTable();
                 break;
             case 2:
-                song.read();   //retrieving values from database
+                s.read();   //retrieving values from database
                 songTable();
                 break;
             case 3:
@@ -593,13 +607,13 @@ public class Main {
                 System.out.println("Enter new song_url:");
                 String song_url = sc.nextLine();
                 song_url+=sc.nextLine();
-                song.update(song_id, song_name, song_length, song_url);   //updating records
+                s.update(song_id, song_name, song_length, song_url);   //updating records
                 songTable();
                 break;
             case 4:
                 System.out.println("Enter song_id of the record you want to delete:");
                 song_id = sc.nextInt();
-                song.delete(song_id);
+                s.delete(song_id);
                 songTable();
                 break;
             default:
@@ -618,15 +632,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        song_band sb=new song_band();
         int song_band_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                song_band.insert();  //inserting values into database
+                sb.insert();  //inserting values into database
                 song_bandTable();
                 break;
             case 2:
-                song_band.read();   //retrieving values from database
+                sb.read();   //retrieving values from database
                 song_bandTable();
                 break;
             case 3:
@@ -636,13 +651,13 @@ public class Main {
                 int song_song_id = sc.nextInt();
                 System.out.println("Enter new band_band_id:");
                 int band_band_id = sc.nextInt();
-                song_band.update(song_band_id, song_song_id, band_band_id);   //updating records
+                sb.update(song_band_id, song_song_id, band_band_id);   //updating records
                 song_bandTable();
                 break;
             case 4:
                 System.out.println("Enter song_band_id of the record you want to delete:");
                 song_band_id = sc.nextInt();
-                song_band.delete(song_band_id);       //deleting records
+                sb.delete(song_band_id);       //deleting records
                 song_bandTable();
                 break;
             default:
@@ -661,15 +676,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        artiste a=new artiste();
         int artiste_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                artiste.insert();  //inserting values into database
+                a.insert();  //inserting values into database
                 artisteTable();
                 break;
             case 2:
-                artiste.read();   //retrieving values from database
+                a.read();   //retrieving values from database
                 artisteTable();
                 break;
             case 3:
@@ -682,13 +698,13 @@ public class Main {
                 String artiste_country = sc.nextLine();
                 System.out.println("Enter new artiste_age:");
                 int artiste_age = sc.nextInt();
-                artiste.update(artiste_id, artiste_name, artiste_country,artiste_age);   //updating records
+                a.update(artiste_id, artiste_name, artiste_country,artiste_age);   //updating records
                 artisteTable();
                 break;
             case 4:
                 System.out.println("Enter artiste_id of the record you want to delete:");
                 artiste_id = sc.nextInt();
-                artiste.delete(artiste_id);       //deleting records
+                a.delete(artiste_id);       //deleting records
                 artisteTable();
                 break;
             default:
@@ -707,15 +723,16 @@ public class Main {
                 + "\n\t4. Delete"
                 + "\n\t5. Go back");
 
+        artiste_band ab=new artiste_band();
         int artiste_band_id;
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                artiste_band.insert(); //inserting values into database
+                ab.insert(); //inserting values into database
                 artiste_bandTable();
                 break;
             case 2:
-                artiste_band.read();   //retrieving values from database
+                ab.read();   //retrieving values from database
                 artiste_bandTable();
                 break;
             case 3:
@@ -728,13 +745,13 @@ public class Main {
                 int artiste_artiste_id = sc.nextInt();
                 System.out.println("Enter new band_band_id:");
                 int band_band_id = sc.nextInt();
-                artiste_band.update(artiste_band_id, band_role, artiste_artiste_id,band_band_id);   //updating records
+                ab.update(artiste_band_id, band_role, artiste_artiste_id,band_band_id);   //updating records
                 artiste_bandTable();
                 break;
             case 4:
                 System.out.println("Enter artiste_band_id of the record you want to delete:");
                 artiste_band_id = sc.nextInt();
-                artiste_band.delete(artiste_band_id);       //deleting records
+                ab.delete(artiste_band_id);       //deleting records
                 artiste_bandTable();
                 break;
             default:

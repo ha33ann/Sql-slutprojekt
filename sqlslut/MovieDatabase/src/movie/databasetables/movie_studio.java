@@ -13,12 +13,12 @@ import org.json.simple.JSONObject;
 
 
 public class movie_studio {
-    static Connection con;
-    public static void insert() {
+	getConnection gc=new getConnection();
+    public void insert() {
         int status = 0;
 
         try {
-            try (Connection con = getConnection.getConnection()) {
+            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
                 pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
@@ -50,10 +50,10 @@ public class movie_studio {
         }
 
     }
-        public static void update(int movie_studio_id, int studio_movie_id, int studio_studio_id) {
+        public void update(int movie_studio_id, int studio_movie_id, int studio_studio_id) {
         int status = 0;
         try {
-            con = getConnection.getConnection(); //establishing the database connection
+            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
             pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
@@ -81,10 +81,10 @@ public class movie_studio {
     }
 
 
-    public static void delete(int id) {
+    public void delete(int id) {
         int status = 0;
         try {
-            Connection con = getConnection.getConnection(); //establishing the database connection 
+            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
             pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
@@ -106,11 +106,11 @@ public class movie_studio {
             Logger.getLogger(actor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public static void read() {
+    public void read() {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = getConnection.getConnection()) {
+            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 pstmt = con.prepareStatement("select * from movie_studio");
 

@@ -13,14 +13,13 @@ import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONObject;
 
 public class movie {
+	getConnection gc=new getConnection();
 
-    static Connection con;
-
-    public static void insert() {
+    public void insert() {
         int status = 0;
 
         try {
-            try (Connection con = getConnection.getConnection()) {
+            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
                 pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
@@ -57,7 +56,7 @@ public class movie {
 
 
 
-    public static void update(int movie_id, String movie_title, String movie_desc, String movie_director, String movie_writer, String movie_hero, String movie_release_date, int movie_rating) throws ParseException {
+    public void update(int movie_id, String movie_title, String movie_desc, String movie_director, String movie_writer, String movie_hero, String movie_release_date, int movie_rating) throws ParseException {
         int status = 0;
         java.util.Date utilDate;
         utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(movie_release_date);
@@ -65,7 +64,7 @@ public class movie {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         try {
-            con = getConnection.getConnection(); //establishing the database connection
+            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
             pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
@@ -97,10 +96,10 @@ public class movie {
 
     }
 
-    public static void delete(int id) {
+    public void delete(int id) {
         int status = 0;
         try {
-            Connection con = getConnection.getConnection(); //establishing the database connection 
+            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
             pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
@@ -123,11 +122,11 @@ public class movie {
         }
     }
 
-    public static void read() {
+    public void read() {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = getConnection.getConnection()) {
+            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 pstmt = con.prepareStatement("select * from movie");
 
