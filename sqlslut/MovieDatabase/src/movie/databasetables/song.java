@@ -8,23 +8,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONObject;
 
 public class song {
 
-	getConnection gc=new getConnection();
 
-    public void insert() {
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into song values (0001, 'My funeral' , 3 , 'https://www.youtube.com/watch?v=TUEWnM6nGPo'),\n"
+                pstmt = conn.prepareStatement("insert into song values (0001, 'My funeral' , 3 , 'https://www.youtube.com/watch?v=TUEWnM6nGPo'),\n"
                         + "(0002, 'Take Your best shot', 2, 'https://www.youtube.com/watch?v=Us39YXM5IEM'),\n"
                         + "(0003, 'Du Hast', 3, 'https://www.youtube.com/watch?v=W3q8Od5qJio'),\n"
                         + "(0004, 'Zick Zack', 4, 'https://www.youtube.com/watch?v=hBTNyJ33LWI'),\n"
@@ -42,7 +39,7 @@ public class song {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,20 +49,18 @@ public class song {
 
 
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from song where song_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from song where song_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Deleted record successfully1");
@@ -78,22 +73,20 @@ public class song {
         }
     }
 
-    public void update(int song_id, String song_name, int song_length, String song_url) {
+    public void update(Connection conn, int song_id, String song_name, int song_length, String song_url) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update song set song_name=?, song_length=?, song_url=? where song_id=?"); //update query
+            pstmt = conn.prepareStatement("update song set song_name=?, song_length=?, song_url=? where song_id=?"); //update query
             pstmt.setString(1, song_name);
             pstmt.setInt(2, song_length);
             pstmt.setString(3, song_url);
             pstmt.setInt(4, song_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Updated record successfully!");
@@ -109,13 +102,12 @@ public class song {
 
     }
 
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from song");
+                pstmt = conn.prepareStatement("select * from song");
 
                 ResultSet rs = pstmt.executeQuery();
 
@@ -128,8 +120,7 @@ public class song {
                 }
 
                 pstmt.close();
-                con.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);

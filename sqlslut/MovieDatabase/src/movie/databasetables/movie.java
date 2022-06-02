@@ -9,22 +9,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONObject;
 
 public class movie {
-	getConnection gc=new getConnection();
-
-    public void insert() {
+	
+	
+	
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
+            
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into movie (movie_title,movie_desc,movie_director,movie_writer,movie_hero,movie_release_date,movie_rating)"
+                pstmt = conn.prepareStatement("insert into movie (movie_title,movie_desc,movie_director,movie_writer,movie_hero,movie_release_date,movie_rating)"
                         + "values "
                         + "('The Shawshank Redemption', 'Two imprisoned men bond over a number of years', 'Frank Darabont', 'Stephen King', 'Tim Robbins', '1994-10-14', '4.5'),"
                         + "('The Godfather', 'The aging patriarch of an organized crime dynasty transfers control to his son','Francis Ford Coppola','Mario Puzo', 'Marlon Brando', '1972-3-24', '4.2'),"
@@ -46,7 +46,7 @@ public class movie {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,7 +56,7 @@ public class movie {
 
 
 
-    public void update(int movie_id, String movie_title, String movie_desc, String movie_director, String movie_writer, String movie_hero, String movie_release_date, int movie_rating) throws ParseException {
+    public void update(Connection conn,int movie_id, String movie_title, String movie_desc, String movie_director, String movie_writer, String movie_hero, String movie_release_date, int movie_rating) throws ParseException {
         int status = 0;
         java.util.Date utilDate;
         utilDate = new SimpleDateFormat("dd-MM-yyyy").parse(movie_release_date);
@@ -64,12 +64,11 @@ public class movie {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update movie set movie_title=?, movie_desc=?, movie_director=?,movie_writer=?, movie_hero=?, movie_release_date=?,movie_rating=? where movie_id=?"); //update query
+            pstmt = conn.prepareStatement("update movie set movie_title=?, movie_desc=?, movie_director=?,movie_writer=?, movie_hero=?, movie_release_date=?,movie_rating=? where movie_id=?"); //update query
             pstmt.setString(1, movie_title);
             pstmt.setString(2, movie_desc);
             pstmt.setString(3, movie_director);
@@ -80,7 +79,6 @@ public class movie {
             pstmt.setInt(8, movie_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Record updated successfully!");
@@ -96,20 +94,18 @@ public class movie {
 
     }
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from movie where movie_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from movie where movie_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Record deleted successfully!");
@@ -122,13 +118,13 @@ public class movie {
         }
     }
 
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
-        try {
-            try (Connection con = gc.getConnection()) {
+        
+            try  {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from movie");
+                pstmt = conn.prepareStatement("select * from movie");
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -144,7 +140,7 @@ public class movie {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);

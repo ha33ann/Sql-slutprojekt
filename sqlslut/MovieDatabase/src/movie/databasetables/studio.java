@@ -7,25 +7,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
 public class studio {
-	getConnection gc=new getConnection();
 
-    public void insert() {
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into studio values (0001, 'Castle Rock Entertainment', '127A Smithfield Road, Frederiksted, Virgin Islands, United States'),\n"
+                pstmt = conn.prepareStatement("insert into studio values (0001, 'Castle Rock Entertainment', '127A Smithfield Road, Frederiksted, Virgin Islands, United States'),\n"
                         + "(0002, 'Paramount Pictures', 'Forze d\\'Agro, Messina, Sicily, Italy, United States'),\n"
                         + "(0003, 'Warner Bros', 'Chicago, Illinois, United States of America'),\n"
                         + "(0004, 'Orion-Nova Productions', 'New York Country Courthouse, New York City, America'),\n"
@@ -45,7 +42,7 @@ public class studio {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,22 +51,20 @@ public class studio {
     }
 
 
-        public void update(int studio_id, String studio_name, String studio_location) {
+        public void update(Connection conn, int studio_id, String studio_name, String studio_location) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update studio set studio_name=?, studio_location=? where studio_id=?"); //update query
+            pstmt = conn.prepareStatement("update studio set studio_name=?, studio_location=? where studio_id=?"); //update query
 
             pstmt.setString(1, studio_name);
             pstmt.setString(2, studio_location);
             pstmt.setInt(3, studio_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Record updated successfully!");
@@ -84,20 +79,18 @@ public class studio {
         }
 
     }
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from studio where studio_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from studio where studio_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Record deleted successfully!");
@@ -109,13 +102,12 @@ public class studio {
             Logger.getLogger(actor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from studio");
+                pstmt = conn.prepareStatement("select * from studio");
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -126,7 +118,7 @@ public class studio {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);

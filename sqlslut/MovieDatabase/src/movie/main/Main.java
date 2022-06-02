@@ -1,6 +1,10 @@
 package movie.main;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Scanner;
+
+import movie.DatabaseConnection.databaseHelper;
 import movie.databasetables.actor;
 import movie.databasetables.artiste;
 import movie.databasetables.artiste_band;
@@ -17,16 +21,19 @@ import movie.databasetables.studio;
 import movie.databasetables.trailer;
 
 public class Main {
-
+	
 
     static Scanner sc = new Scanner(System.in);
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, SQLException {
+    	Connection conn = databaseHelper.DbConnect("movie");
+    	
         System.out.println("Welcome!");
         System.out.println("Using movie database!");
-        showTableNames();    //calling the CRUD methods
+        showTableNames(conn);    //calling the CRUD methods
+        conn.close();
     }
 
-    private static void showTableNames() throws ParseException {
+    private static void showTableNames(Connection conn) throws ParseException {
         System.out.println("\n Please choose the table on which you want to perform CRUD operations:"
                 + "\n1. movie"
                 + "\n2. genre"
@@ -51,46 +58,46 @@ public class Main {
         
         switch (choice) {
             case 1:
-                movieTable();
+                movieTable(conn);
                 break;
             case 2:
-                genreTable();
+                genreTable(conn);
                 break;
             case 3:
-                movie_genreTable();
+                movie_genreTable(conn);
                 break;
             case 4:
-                posterTable();
+                posterTable(conn);
                 break;
             case 5:
-                trailerTable();
+                trailerTable(conn);
                 break;
             case 6:
-                studioTable();
+                studioTable(conn);
                 break;
             case 7:
-                movie_studioTable();
+                movie_studioTable(conn);
                 break;
             case 8:
-                actorTable();
+                actorTable(conn);
                 break;
             case 9:
-                roleTable();
+                roleTable(conn);
                 break;
             case 10:
-                bandTable();
+                bandTable(conn);
                 break;
             case 11:
-                songTable();
+                songTable(conn);
                 break;
             case 12:
-                song_bandTable();
+                song_bandTable(conn);
                 break;
             case 13:
-                artisteTable();
+                artisteTable(conn);
                 break;
             case 14:
-                artiste_bandTable();
+                artiste_bandTable(conn);
                 break;
             default:
                 break;
@@ -100,7 +107,7 @@ public class Main {
     }
     
 
-    private static void movieTable() throws ParseException {
+    private static void movieTable(Connection conn) throws ParseException {
     	System.out.println("\n movie table selected!");
         System.out.println("Which operation do you want to perform on movie table?"
                 + "\n\t1. Create"
@@ -115,12 +122,12 @@ public class Main {
         switch (choice) {
             case 1:
             	
-                m.insert();  //inserting values into database
-                movieTable();
+                m.insert(conn);  //inserting values into database
+                movieTable(conn);
                 break;
             case 2:
-                m.read();    //retrieving values from database
-                movieTable();
+                m.read(conn);    //retrieving values from database
+                movieTable(conn);
                 break;
             case 3:
                 System.out.println("Enter movie_id of the record you want to update:");
@@ -140,23 +147,23 @@ public class Main {
                 String movie_release_date = sc.nextLine();
                 System.out.println("Enter new movie_rating:");
                 int movie_rating = sc.nextInt();
-                m.update(movie_id, movie_title, movie_desc, movie_director, movie_writer, movie_hero, movie_release_date, movie_rating);   //updating records
-                movieTable();
+                m.update(conn, movie_id, movie_title, movie_desc, movie_director, movie_writer, movie_hero, movie_release_date, movie_rating);   //updating records
+                movieTable(conn);
                 break;
             case 4:
                 System.out.println("Enter movie_id of the record you want to delete:");
                 movie_id = sc.nextInt();
-                m.delete(movie_id);     //deleting records
-                movieTable();
+                m.delete(conn, movie_id);     //deleting records
+                movieTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void genreTable() throws ParseException {
+    private static void genreTable(Connection conn) throws ParseException {
         System.out.println("\n genre table selected!");
         System.out.println("Which operation do you want to perform on genre table?"
                 + "\n\t1. Create"
@@ -170,12 +177,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                g.insert();  //inserting values into database
-                genreTable();
+                g.insert(conn);  //inserting values into database
+                genreTable(conn);
                 break;
             case 2:
-                g.read();   //retrieving values from database
-                genreTable();
+                g.read(conn);   //retrieving values from database
+                genreTable(conn);
                 break;
             case 3:
                 System.out.println("Enter genre_id of the record you want to update:");
@@ -186,23 +193,23 @@ public class Main {
                 System.out.println("Enter new genre_desc:");
                 String genre_desc = sc.next();
                 genre_desc+=sc.nextLine();
-                g.update(genre_id, genre_type, genre_desc);   //updating records
-                genreTable();
+                g.update(conn, genre_id, genre_type, genre_desc);   //updating records
+                genreTable(conn);
                 break;
             case 4:
                 System.out.println("Enter genre_id of the record you want to delete:");
                 genre_id = sc.nextInt();
-                g.delete(genre_id);       //deleting records
-                genreTable();
+                g.delete(conn, genre_id);       //deleting records
+                genreTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void movie_genreTable() throws ParseException {
+    private static void movie_genreTable(Connection conn) throws ParseException {
         System.out.println("\n movie_genre table selected!");
         System.out.println("Which operation do you want to perform on movie_genre table?"
                 + "\n\t1. Create"
@@ -218,12 +225,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                mg.insert();   //inserting values into database
-                movie_genreTable();
+                mg.insert(conn);   //inserting values into database
+                movie_genreTable(conn);
                 break;
             case 2:
-                mg.read();   //retrieving values from database
-                movie_genreTable();
+                mg.read(conn);   //retrieving values from database
+                movie_genreTable(conn);
                 break;
             case 3:
                 System.out.println("Enter movie_genre_id of the record you want to update:");
@@ -232,23 +239,23 @@ public class Main {
                 int genre_movie_id = sc.nextInt();
                 System.out.println("Enter new genre_genre_id:");
                 int genre_genre_id = sc.nextInt();
-                mg.update(movie_genre_id, genre_movie_id, genre_genre_id);   //updating records
-                movie_genreTable();
+                mg.update(conn, movie_genre_id, genre_movie_id, genre_genre_id);   //updating records
+                movie_genreTable(conn);
                 break;
             case 4:
                 System.out.println("Enter movie_genre_id of the record you want to delete:");
                 movie_genre_id = sc.nextInt();
-                mg.delete(movie_genre_id);       //deleting records
-                movie_genreTable();
+                mg.delete(conn, movie_genre_id);       //deleting records
+                movie_genreTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void posterTable() throws ParseException {
+    private static void posterTable(Connection conn) throws ParseException {
         System.out.println("\n poster table selected!");
         System.out.println("Which operation do you want to perform on poster table?"
                 + "\n\t1. Create"
@@ -262,12 +269,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                p.insert();  //inserting values into database
-                posterTable();
+                p.insert(conn);  //inserting values into database
+                posterTable(conn);
                 break;
             case 2:
-                p.read();   //retrieving values from database
-                posterTable();
+                p.read(conn);   //retrieving values from database
+                posterTable(conn);
                 break;
             case 3:
                 System.out.println("Enter poster_id of the record you want to update:");
@@ -277,23 +284,23 @@ public class Main {
                 poster_title+=sc.nextLine();
                 System.out.println("Enter new poster_movie_id:");
                 int poster_movie_id = sc.nextInt();
-                p.update(poster_id, poster_title, poster_movie_id);   //updating records
-                posterTable();
+                p.update(conn, poster_id, poster_title, poster_movie_id);   //updating records
+                posterTable(conn);
                 break;
             case 4:
                 System.out.println("Enter poster_id of the record you want to delete:");
                 poster_id = sc.nextInt();
-                p.delete(poster_id);       //deleting records
-                posterTable();
+                p.delete(conn, poster_id);       //deleting records
+                posterTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void trailerTable() throws ParseException {
+    private static void trailerTable(Connection conn) throws ParseException {
         System.out.println("\n trailer table selected!");
         System.out.println("Which operation do you want to perform on trailer table?"
                 + "\n\t1. Create"
@@ -307,12 +314,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                t.insert();   //inserting values into database
-                trailerTable();
+                t.insert(conn);   //inserting values into database
+                trailerTable(conn);
                 break;
             case 2:
-                t.read();   //retrieving values from database
-                trailerTable();
+                t.read(conn);   //retrieving values from database
+                trailerTable(conn);
                 break;
             case 3:
                 System.out.println("Enter trailer_id of the record you want to update:");
@@ -325,23 +332,23 @@ public class Main {
                 
                 System.out.println("Enter new trailer_movie_id:");
                 int trailer_movie_id = sc.nextInt();
-                t.update(trailer_id, trailer_length, trailer_url, trailer_movie_id);   //updating records
-                trailerTable();
+                t.update(conn, trailer_id, trailer_length, trailer_url, trailer_movie_id);   //updating records
+                trailerTable(conn);
                 break;
             case 4:
                 System.out.println("Enter trailer_id of the record you want to delete:");
                 trailer_id = sc.nextInt();
-                t.delete(trailer_id);       //deleting records
-                trailerTable();
+                t.delete(conn, trailer_id);       //deleting records
+                trailerTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void studioTable() throws ParseException {
+    private static void studioTable(Connection conn) throws ParseException {
         System.out.println("\n studio table selected!");
         System.out.println("Which operation do you want to perform on studio table?"
                 + "\n\t1. Create"
@@ -355,12 +362,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                s.insert();   //inserting values into database
-                studioTable();
+                s.insert(conn);   //inserting values into database
+                studioTable(conn);
                 break;
             case 2:
-                s.read();   //retrieving values from database
-                studioTable();
+                s.read(conn);   //retrieving values from database
+                studioTable(conn);
                 break;
             case 3:
                 System.out.println("Enter studio_id of the record you want to update:");
@@ -370,23 +377,23 @@ public class Main {
                 studio_name+=sc.nextLine();
                 System.out.println("Enter new studio_location:");
                 String studio_location = sc.nextLine();
-                s.update(studio_id, studio_name, studio_location);   //updating records
-                studioTable();
+                s.update(conn, studio_id, studio_name, studio_location);   //updating records
+                studioTable(conn);
                 break;
             case 4:
                 System.out.println("Enter studio_id of the record you want to delete:");
                 studio_id = sc.nextInt();
-                s.delete(studio_id);       //deleting records
-                studioTable();
+                s.delete(conn, studio_id);       //deleting records
+                studioTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void movie_studioTable() throws ParseException {
+    private static void movie_studioTable(Connection conn) throws ParseException {
         System.out.println("\n movie_studio table selected!");
         System.out.println("Which operation do you want to perform on movie_studio table?"
                 + "\n\t1. Create"
@@ -400,12 +407,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                ms.insert();  //inserting values into database
-                movie_studioTable();
+                ms.insert(conn);  //inserting values into database
+                movie_studioTable(conn);
                 break;
             case 2:
-                ms.read();   //retrieving values from database
-                movie_studioTable();
+                ms.read(conn);   //retrieving values from database
+                movie_studioTable(conn);
                 break;
             case 3:
                 System.out.println("Enter movie_studio_id of the record you want to update:");
@@ -414,23 +421,23 @@ public class Main {
                 int studio_movie_id = sc.nextInt();
                 System.out.println("Enter new studio_studio_id:");
                 int studio_studio_id = sc.nextInt();
-                ms.update(movie_studio_id, studio_movie_id, studio_studio_id);   //updating records
-                movie_studioTable();
+                ms.update(conn, movie_studio_id, studio_movie_id, studio_studio_id);   //updating records
+                movie_studioTable(conn);
                 break;
             case 4:
                 System.out.println("Enter movie_studio_id of the record you want to delete:");
                 movie_studio_id = sc.nextInt();
-                ms.delete(movie_studio_id);
-                movie_studioTable();
+                ms.delete(conn, movie_studio_id);
+                movie_studioTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void actorTable() throws ParseException {
+    private static void actorTable(Connection conn) throws ParseException {
         System.out.println("\n actor table selected!");
         System.out.println("Which operation do you want to perform on actor table?"
                 + "\n\t1. Create"
@@ -444,12 +451,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                a.insert();  //inserting values into database
-                actorTable();
+                a.insert(conn);  //inserting values into database
+                actorTable(conn);
                 break;
             case 2:
-                a.read();   //retrieving values from database
-                actorTable();
+                a.read(conn);   //retrieving values from database
+                actorTable(conn);
                 break;
             case 3:
                 System.out.println("Enter actor_id of the record you want to update:");
@@ -467,23 +474,23 @@ public class Main {
                 String actor_insta_url = sc.nextLine();
                 System.out.println("Enter new actor_fb_url:");
                 String actor_fb_url = sc.nextLine();
-                a.update(actor_id, actor_first_name, actor_last_name, actor_nationality, actor_twitter_url, actor_insta_url, actor_fb_url);   //updating records
-                actorTable();
+                a.update(conn, actor_id, actor_first_name, actor_last_name, actor_nationality, actor_twitter_url, actor_insta_url, actor_fb_url);   //updating records
+                actorTable(conn);
                 break;
             case 4:
                 System.out.println("Enter actor_id of the record you want to delete:");
                 actor_id = sc.nextInt();
-                a.delete(actor_id);       //deleting records
-                actorTable();
+                a.delete(conn, actor_id);       //deleting records
+                actorTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void roleTable() throws ParseException {
+    private static void roleTable(Connection conn) throws ParseException {
         System.out.println("\n role table selected!");
         System.out.println("Which operation do you want to perform on role table?"
                 + "\n\t1. Create"
@@ -497,12 +504,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                r.insert();  //inserting values into database
-                roleTable();
+                r.insert(conn);  //inserting values into database
+                roleTable(conn);
                 break;
             case 2:
-                r.read();   //retrieving values from database
-                roleTable();
+                r.read(conn);   //retrieving values from database
+                roleTable(conn);
                 break;
             case 3:
                 System.out.println("Enter role_id of the record you want to update:");
@@ -514,23 +521,23 @@ public class Main {
                 int role_movie_id = sc.nextInt();
                 System.out.println("Enter new role_person_id:");
                 int role_person_id = sc.nextInt();
-                r.update(role_id, role_desc, role_movie_id, role_person_id);   //updating records
-                roleTable();
+                r.update(conn, role_id, role_desc, role_movie_id, role_person_id);   //updating records
+                roleTable(conn);
                 break;
             case 4:
                 System.out.println("Enter role_id of the record you want to delete:");
                 role_id = sc.nextInt();
-                r.delete(role_id);       //deleting records
-                roleTable();
+                r.delete(conn, role_id);       //deleting records
+                roleTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void bandTable() throws ParseException {
+    private static void bandTable(Connection conn) throws ParseException {
         System.out.println("\n band table selected!");
         System.out.println("Which operation do you want to perform on band table?"
                 + "\n\t1. Create"
@@ -544,12 +551,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                b.insert();  //inserting values into database
-                bandTable();
+                b.insert(conn);  //inserting values into database
+                bandTable(conn);
                 break;
             case 2:
-                b.read();   //retrieving values from database
-                bandTable();
+                b.read(conn);   //retrieving values from database
+                bandTable(conn);
                 break;
             case 3:
                 System.out.println("Enter band_id of the record you want to update:");
@@ -559,23 +566,23 @@ public class Main {
                 band_name+=sc.nextLine();
                 System.out.println("Enter new band_total_members:");
                 int band_total_members = sc.nextInt();
-                b.update(band_id, band_name, band_total_members);   //updating records
-                bandTable();
+                b.update(conn, band_id, band_name, band_total_members);   //updating records
+                bandTable(conn);
                 break;
             case 4:
                 System.out.println("Enter band_id of the record you want to delete:");
                 band_id = sc.nextInt();
-                b.delete(band_id);       //deleting records
-                bandTable();
+                b.delete(conn, band_id);       //deleting records
+                bandTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void songTable() throws ParseException {
+    private static void songTable(Connection conn) throws ParseException {
         System.out.println("\n song table selected!");
         System.out.println("Which operation do you want to perform on song table?"
                 + "\n\t1. Create"
@@ -589,12 +596,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                s.insert();  //inserting values into database
-                songTable();
+                s.insert(conn);  //inserting values into database
+                songTable(conn);
                 break;
             case 2:
-                s.read();   //retrieving values from database
-                songTable();
+                s.read(conn);   //retrieving values from database
+                songTable(conn);
                 break;
             case 3:
                 System.out.println("Enter song_id of the record you want to update:");
@@ -607,23 +614,23 @@ public class Main {
                 System.out.println("Enter new song_url:");
                 String song_url = sc.nextLine();
                 song_url+=sc.nextLine();
-                s.update(song_id, song_name, song_length, song_url);   //updating records
-                songTable();
+                s.update(conn, song_id, song_name, song_length, song_url);   //updating records
+                songTable(conn);
                 break;
             case 4:
                 System.out.println("Enter song_id of the record you want to delete:");
                 song_id = sc.nextInt();
-                s.delete(song_id);
-                songTable();
+                s.delete(conn, song_id);
+                songTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void song_bandTable() throws ParseException {
+    private static void song_bandTable(Connection conn) throws ParseException {
         System.out.println("\n song_band table selected!");
         System.out.println("Which operation do you want to perform on song_band table?"
                 + "\n\t1. Create"
@@ -637,12 +644,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                sb.insert();  //inserting values into database
-                song_bandTable();
+                sb.insert(conn);  //inserting values into database
+                song_bandTable(conn);
                 break;
             case 2:
-                sb.read();   //retrieving values from database
-                song_bandTable();
+                sb.read(conn);   //retrieving values from database
+                song_bandTable(conn);
                 break;
             case 3:
                 System.out.println("Enter song_band_id of the record you want to update:");
@@ -651,23 +658,23 @@ public class Main {
                 int song_song_id = sc.nextInt();
                 System.out.println("Enter new band_band_id:");
                 int band_band_id = sc.nextInt();
-                sb.update(song_band_id, song_song_id, band_band_id);   //updating records
-                song_bandTable();
+                sb.update(conn, song_band_id, song_song_id, band_band_id);   //updating records
+                song_bandTable(conn);
                 break;
             case 4:
                 System.out.println("Enter song_band_id of the record you want to delete:");
                 song_band_id = sc.nextInt();
-                sb.delete(song_band_id);       //deleting records
-                song_bandTable();
+                sb.delete(conn, song_band_id);       //deleting records
+                song_bandTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void artisteTable() throws ParseException {
+    private static void artisteTable(Connection conn) throws ParseException {
         System.out.println("\n artiste table selected!");
         System.out.println("Which operation do you want to perform on artiste table?"
                 + "\n\t1. Create"
@@ -681,12 +688,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                a.insert();  //inserting values into database
-                artisteTable();
+                a.insert(conn);  //inserting values into database
+                artisteTable(conn);
                 break;
             case 2:
-                a.read();   //retrieving values from database
-                artisteTable();
+                a.read(conn);   //retrieving values from database
+                artisteTable(conn);
                 break;
             case 3:
                 System.out.println("Enter artiste_id of the record you want to update:");
@@ -698,23 +705,23 @@ public class Main {
                 String artiste_country = sc.nextLine();
                 System.out.println("Enter new artiste_age:");
                 int artiste_age = sc.nextInt();
-                a.update(artiste_id, artiste_name, artiste_country,artiste_age);   //updating records
-                artisteTable();
+                a.update(conn, artiste_id, artiste_name, artiste_country,artiste_age);   //updating records
+                artisteTable(conn);
                 break;
             case 4:
                 System.out.println("Enter artiste_id of the record you want to delete:");
                 artiste_id = sc.nextInt();
-                a.delete(artiste_id);       //deleting records
-                artisteTable();
+                a.delete(conn, artiste_id);       //deleting records
+                artisteTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 
     }
 
-    private static void artiste_bandTable() throws ParseException {
+    private static void artiste_bandTable(Connection conn) throws ParseException {
         System.out.println("\n artiste_band table selected!");
         System.out.println("Which operation do you want to perform on artiste_band table?"
                 + "\n\t1. Create"
@@ -728,12 +735,12 @@ public class Main {
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                ab.insert(); //inserting values into database
-                artiste_bandTable();
+                ab.insert(conn); //inserting values into database
+                artiste_bandTable(conn);
                 break;
             case 2:
-                ab.read();   //retrieving values from database
-                artiste_bandTable();
+                ab.read(conn);   //retrieving values from database
+                artiste_bandTable(conn);
                 break;
             case 3:
                 System.out.println("Enter artiste_band_id of the record you want to update:");
@@ -745,17 +752,17 @@ public class Main {
                 int artiste_artiste_id = sc.nextInt();
                 System.out.println("Enter new band_band_id:");
                 int band_band_id = sc.nextInt();
-                ab.update(artiste_band_id, band_role, artiste_artiste_id,band_band_id);   //updating records
-                artiste_bandTable();
+                ab.update(conn, artiste_band_id, band_role, artiste_artiste_id,band_band_id);   //updating records
+                artiste_bandTable(conn);
                 break;
             case 4:
                 System.out.println("Enter artiste_band_id of the record you want to delete:");
                 artiste_band_id = sc.nextInt();
-                ab.delete(artiste_band_id);       //deleting records
-                artiste_bandTable();
+                ab.delete(conn, artiste_band_id);       //deleting records
+                artiste_bandTable(conn);
                 break;
             default:
-                showTableNames();
+                showTableNames(conn);
                 break;
         }
 

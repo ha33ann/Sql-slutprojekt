@@ -7,24 +7,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
 public class role {
 
-	getConnection gc=new getConnection();
-    public void insert() {
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("/*inserting in role table */\n"
+                pstmt = conn.prepareStatement("/*inserting in role table */\n"
                         + "insert into role values (0001, 'lead actor', 0001, 0002),\n"
                         + "(0003, 'director' , 0001, 0012),\n"
                         + "(0004, 'writer', 0001, 0013),\n"
@@ -39,15 +36,14 @@ public class role {
 
                 status = pstmt.executeUpdate();
                 if (status > 0) {
-                    System.out.println("14 rows inserted into role table successfully1");
+                    System.out.println("14 rows inserted into role table successfully!");
                 } else {
                     System.out.println("Couldn't insert values into the table, some error occured!");
                 }
 
                 
                 pstmt.close();
-                con.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,22 +53,20 @@ public class role {
 
 
 
-    public void update(int role_id, String role_desc, int role_movie_id, int role_person_id) {
+    public void update(Connection conn, int role_id, String role_desc, int role_movie_id, int role_person_id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update role set role_desc=?, role_movie_id=?,role_person_id=? where role_id=?"); //update query
+            pstmt = conn.prepareStatement("update role set role_desc=?, role_movie_id=?,role_person_id=? where role_id=?"); //update query
             pstmt.setString(1, role_desc);
             pstmt.setInt(2, role_movie_id);
             pstmt.setInt(3, role_person_id);
             pstmt.setInt(4, role_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Record updated successfully!");
@@ -88,23 +82,21 @@ public class role {
 
     }
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from role where role_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from role where role_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
-                System.out.println("Deleted record successfully1");
+                System.out.println("Deleted record successfully!");
             } else {
                 System.out.println("Couldn't delete record some error occured!");
             }
@@ -114,13 +106,12 @@ public class role {
         }
     }
 
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from role");
+                pstmt = conn.prepareStatement("select * from role");
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -132,7 +123,7 @@ public class role {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);

@@ -7,25 +7,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
 public class trailer {
 
-	getConnection gc=new getConnection();
 
-    public void insert() {
+
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into trailer values (0001, '2' , 'https://www.imdb.com/video/vi3877612057/?playlistId=tt0111161?ref_=ext_shr_lnk', 1),\n"
+                pstmt = conn.prepareStatement("insert into trailer values (0001, '2' , 'https://www.imdb.com/video/vi3877612057/?playlistId=tt0111161?ref_=ext_shr_lnk', 1),\n"
                         + "(0002, '1' , 'https://www.imdb.com/video/vi1348706585/?playlistId=tt0068646?ref_=ext_shr_lnk', 2),\n"
                         + "(0003, '0', 'https://www.imdb.com/video/vi324468761/?playlistId=tt0468569?ref_=ext_shr_lnk', 3),\n"
                         + "(0004, '2', 'https://www.imdb.com/video/vi2924462873/?playlistId=tt0050083?ref_=ext_shr_lnk', 4),\n"
@@ -45,7 +43,7 @@ public class trailer {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -55,22 +53,20 @@ public class trailer {
 
 
 
-    public void update(int trailer_id, int trailer_length, String trailer_url, int trailer_movie_id) {
+    public void update(Connection conn, int trailer_id, int trailer_length, String trailer_url, int trailer_movie_id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update trailer set trailer_length=?, trailer_url=?, trailer_movie_id=? where trailer_id=?"); //update query
+            pstmt = conn.prepareStatement("update trailer set trailer_length=?, trailer_url=?, trailer_movie_id=? where trailer_id=?"); //update query
             pstmt.setInt(1, trailer_length);
             pstmt.setString(2, trailer_url);
             pstmt.setInt(3, trailer_movie_id);
             pstmt.setInt(4, trailer_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Record updated successfully!");
@@ -86,20 +82,18 @@ public class trailer {
 
     }
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from trailer where trailer_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from trailer where trailer_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Deleted record successfully1");
@@ -112,13 +106,12 @@ public class trailer {
         }
     }
 
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from trailer");
+                pstmt = conn.prepareStatement("select * from trailer");
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -130,8 +123,7 @@ public class trailer {
                 }
 
                 pstmt.close();
-                con.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);

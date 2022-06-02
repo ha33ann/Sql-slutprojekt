@@ -11,23 +11,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
 public class artiste {
-	getConnection gc=new getConnection();
-    public void insert() {
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into artiste values (0001, 'Edsel Dope', 'Florida USA', 48),\n"
+                pstmt = conn.prepareStatement("insert into artiste values (0001, 'Edsel Dope', 'Florida USA', 48),\n"
                         + "(0002, 'Solar Lodger', 'Canada', null),\n"
                         + "(0003, 'Pat Benatar', 'New York City USA', 69),\n"
                         + "(0004, 'Till Lindemann', 'East Germany', 59),\n"
@@ -42,7 +39,7 @@ public class artiste {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,21 +50,18 @@ public class artiste {
 
 
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from artiste where artiste_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from artiste where artiste_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
-
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Record deleted successfully!");
             } else {
@@ -79,13 +73,12 @@ public class artiste {
         }
     }
 
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from artiste");
+                pstmt = conn.prepareStatement("select * from artiste");
 
                 ResultSet rs = pstmt.executeQuery();
                 JSONArray array = new JSONArray();
@@ -98,29 +91,27 @@ public class artiste {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-        public void update(int artiste_id, String artiste_name, String artiste_country, int artiste_age) {
+        public void update(Connection conn, int artiste_id, String artiste_name, String artiste_country, int artiste_age) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update artiste set artiste_name=?, artiste_country=?, artiste_age=? where artiste_id=?"); //update query
+            pstmt = conn.prepareStatement("update artiste set artiste_name=?, artiste_country=?, artiste_age=? where artiste_id=?"); //update query
             pstmt.setString(1, artiste_name);
             pstmt.setString(2, artiste_country);
             pstmt.setInt(3, artiste_age);
             pstmt.setInt(4, artiste_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Record updated successfully!");

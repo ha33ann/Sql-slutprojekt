@@ -7,23 +7,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
 public class movie_studio {
-	getConnection gc=new getConnection();
-    public void insert() {
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into movie_studio values (0001, 1, 1),\n"
+                pstmt = conn.prepareStatement("insert into movie_studio values (0001, 1, 1),\n"
                         + "(0002, 2, 2),\n"
                         + "(0003, 3, 3),\n"
                         + "(0004, 4, 4),\n"
@@ -43,29 +40,26 @@ public class movie_studio {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-        public void update(int movie_studio_id, int studio_movie_id, int studio_studio_id) {
+        public void update(Connection conn, int movie_studio_id, int studio_movie_id, int studio_studio_id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update movie_studio set studio_movie_id=?, studio_studio_id=? where movie_studio_id=?"); //update query
+            pstmt = conn.prepareStatement("update movie_studio set studio_movie_id=?, studio_studio_id=? where movie_studio_id=?"); //update query
             pstmt.setInt(1, studio_movie_id);
             pstmt.setInt(2, studio_studio_id);
             pstmt.setInt(3, movie_studio_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
-
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Record updated successfully!");
             } else {
@@ -81,20 +75,18 @@ public class movie_studio {
     }
 
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from movie_studio where movie_studio_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from movie_studio where movie_studio_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Deleted record successfully1");
@@ -106,13 +98,12 @@ public class movie_studio {
             Logger.getLogger(actor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from movie_studio");
+                pstmt = conn.prepareStatement("select * from movie_studio");
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -123,7 +114,7 @@ public class movie_studio {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);

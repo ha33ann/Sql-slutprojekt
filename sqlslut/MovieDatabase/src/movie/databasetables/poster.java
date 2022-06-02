@@ -8,24 +8,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import movie.DatabaseConnection.getConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
 public class poster {
 
-	getConnection gc=new getConnection();
-    public void insert() {
+    public void insert(Connection conn) {
         int status = 0;
 
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
                 PreparedStatement pstmt1 = null;
-                pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
+                pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0;");
                 pstmt1.executeUpdate();
-                pstmt = con.prepareStatement("insert into poster values (0001, 'The Shawshank Redemption', 1),\n"
+                pstmt = conn.prepareStatement("insert into poster values (0001, 'The Shawshank Redemption', 1),\n"
                         + "(0002, 'The Godfather', 2),\n"
                         + "(0003, 'The Dark Knight',3),\n"
                         + "(0004, '12 Angry Men',4),\n"
@@ -44,7 +41,7 @@ public class poster {
                 }
 
                 pstmt.close();
-            }
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,22 +49,19 @@ public class poster {
 
     }
 
-    public void update(int poster_id, String poster_title, int poster_movie_id) {
+    public void update(Connection conn, int poster_id, String poster_title, int poster_movie_id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0"); //performing update query on table having foreign key
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("update poster set poster_title=?, poster_movie_id=? where poster_id=?"); //update query
+            pstmt = conn.prepareStatement("update poster set poster_title=?, poster_movie_id=? where poster_id=?"); //update query
             pstmt.setString(1, poster_title);
             pstmt.setInt(2, poster_movie_id);
             pstmt.setInt(3, poster_id);
             status = pstmt.executeUpdate(); //executing the query
             pstmt.close();
-            con.close();
-
             if (status > 0) { //checking if record has been updated or not
                 System.out.println("Updated record successfully1");
             } else {
@@ -82,20 +76,18 @@ public class poster {
 
     }
 
-    public void delete(int id) {
+    public void delete(Connection conn, int id) {
         int status = 0;
         try {
-            Connection con = gc.getConnection(); //establishing the database connection 
             PreparedStatement pstmt = null;
             PreparedStatement pstmt1 = null;
-            pstmt1 = con.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
+            pstmt1 = conn.prepareStatement("SET FOREIGN_KEY_CHECKS=0");
             pstmt1.executeUpdate();
-            pstmt = con.prepareStatement("delete from poster where poster_id=?"); //delete query
+            pstmt = conn.prepareStatement("delete from poster where poster_id=?"); //delete query
             pstmt.setInt(1, id);
             status = pstmt.executeUpdate();
 
             pstmt.close();
-            con.close();
 
             if (status > 0) { //checking if record has been deleted or not
                 System.out.println("Deleted record successfully1");
@@ -109,13 +101,12 @@ public class poster {
     }
 
 
-    public void read() {
+    public void read(Connection conn) {
 
         JSONObject record = new JSONObject();
         try {
-            try (Connection con = gc.getConnection()) {
                 PreparedStatement pstmt = null;
-                pstmt = con.prepareStatement("select * from poster");
+                pstmt = conn.prepareStatement("select * from poster");
 
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
@@ -126,8 +117,6 @@ public class poster {
                 }
 
                 pstmt.close();
-                con.close();
-            }
 
         } catch (SQLException ex) {
             Logger.getLogger(movie.class.getName()).log(Level.SEVERE, null, ex);
