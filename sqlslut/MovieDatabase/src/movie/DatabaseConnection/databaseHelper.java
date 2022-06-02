@@ -30,3 +30,13 @@ public class databaseHelper {
 	}
 }
 
+/* om du får SSL varnings kod så skriv såhär istället:
+try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie?autoReconnect=true&useSSL=false", "root", "123");
+		} catch (SQLException e) {
+			System.out.println("Database can not be connected");
+			e.printStackTrace();
+		}
+		
+root och 123 ska vara ditt användarnamn och ditt lösenord!
+*/
